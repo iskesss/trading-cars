@@ -3,32 +3,11 @@ import uuid
 import json
 import streamlit as st
 from core import identify_vehicle
+from streamlit_card import card
+from card import get_cropped_image_base64, trading_card
 
 # Page configuration
-st.set_page_config(page_title="CarSpotter", layout="wide")
-
-# Custom CSS styling
-st.markdown(
-    """
-    <style>
-    .css-1d391kg {
-        padding: 2rem 1rem;
-    }
-    .stRadio > label {
-        font-size: 1.2rem;
-        font-weight: 600;
-        padding: 1rem 0;
-    }
-    .car-card {
-        border: 1px solid #ddd;
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 1rem;
-    }
-    </style>
-""",
-    unsafe_allow_html=True,
-)
+st.set_page_config(page_title="TradingCars", layout="wide")
 
 # Directory and file setup
 COLLECTION_DIR = "car_collection"
@@ -73,6 +52,10 @@ def add_car_page():
                             "make": str(result[1]) if len(result) > 1 else "Unknown",
                             "model": str(result[2]) if len(result) > 2 else "Unknown",
                             "color": str(result[3]) if len(result) > 3 else "Unknown",
+                            "x1": str(result[4]) if len(result) > 4 else "Unknown",
+                            "y1": str(result[5]) if len(result) > 5 else "Unknown",
+                            "x2": str(result[6]) if len(result) > 6 else "Unknown",
+                            "y2": str(result[7]) if len(result) > 7 else "Unknown",
                         }
                     else:
                         car_info = result
@@ -149,7 +132,7 @@ def gallery_page():
 # Sidebar navigation
 st.sidebar.markdown(
     """
-    # 🚗 CarSpotter
+    # 🚗 TradingCars
     ___
 """
 )
