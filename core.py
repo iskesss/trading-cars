@@ -5,8 +5,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def identify_vehicle() -> str:
-    # returns "(YEAR,MAKE,MODEL)" 3
+def identify_vehicle(image_bytes):
+    # returns "(YEAR,MAKE,MODEL)" 3-tuple
+
     # Configure the API
     genai.configure(api_key=os.environ["GOOGLE_AI_API"])
 
@@ -15,10 +16,6 @@ def identify_vehicle() -> str:
         "gemini-2.0-flash",
         system_instruction="You are a car recognition expert. Respond ONLY with 'YEAR, MAKE, MODEL' format.",
     )
-
-    # Read image bytes
-    with open("car.jpeg", "rb") as f:
-        image_bytes = f.read()
 
     # Generate content with separate text and image parts
     response = model.generate_content(
@@ -30,6 +27,3 @@ def identify_vehicle() -> str:
     year, make, model = map(str.strip, response.text.split(","))
 
     return (year, make, model)
-
-
-print(identify_vehicle())
