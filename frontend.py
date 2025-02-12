@@ -52,10 +52,10 @@ def add_car_page():
                             "make": str(result[1]) if len(result) > 1 else "Unknown",
                             "model": str(result[2]) if len(result) > 2 else "Unknown",
                             "color": str(result[3]) if len(result) > 3 else "Unknown",
-                            "x1": str(result[4]) if len(result) > 4 else "Unknown",
-                            "y1": str(result[5]) if len(result) > 5 else "Unknown",
-                            "x2": str(result[6]) if len(result) > 6 else "Unknown",
-                            "y2": str(result[7]) if len(result) > 7 else "Unknown",
+                            # "x1": result[4] if len(result) > 4 else "Unknown", # bounding boxes not yet implemented
+                            # "y1": result[5] if len(result) > 5 else "Unknown", # bounding boxes not yet implemented
+                            # "x2": result[6] if len(result) > 6 else "Unknown", # bounding boxes not yet implemented
+                            # "y2": result[7] if len(result) > 7 else "Unknown", # bounding boxes not yet implemented
                         }
                     else:
                         car_info = result
@@ -85,45 +85,54 @@ def add_car_page():
 
 
 def gallery_page():
+
     st.title("Car Gallery")
     st.write("Your collection of identified cars")
 
     metadata = load_metadata()
     if metadata:
-        cols = st.columns(2)
+        cols = st.columns(3)
         # Keep track of valid entries to potentially clean up metadata
         valid_entries = {}
 
         for idx, (image_filename, details) in enumerate(metadata.items()):
-            img_path = os.path.join(COLLECTION_DIR, image_filename)
+            image_path = os.path.join(COLLECTION_DIR, image_filename)
 
             # Check if the image file exists
-            if not os.path.exists(img_path):
+            if not os.path.exists(image_path):
                 continue
 
             # Try to display the image and its details
             try:
-                col = cols[idx % 2]
+                col = cols[idx % 3]
                 with col:
-                    st.markdown('<div class="car-card">', unsafe_allow_html=True)
-                    with open(img_path, "rb") as img_file:
-                        image_bytes = img_file.read()
-                        st.image(image_bytes, use_container_width=True)
-                    st.markdown(
-                        f"<span style='color:{details.get('color','Unknown')}'>{details.get('year', 'Unknown')} "
-                        f"{details.get('make', 'Unknown')} "
-                        f"{details.get('model', 'Unknown')}</span>",
-                        unsafe_allow_html=True,
+                    image_base64 = get_cropped_image_base64(
+                        image_path=image_path,
+                        # x1=details.get("x1", "Unknown"), # bounding boxes not supported at the moment
+                        # y1=details.get("y1", "Unknown"), # bounding boxes not supported at the moment
+                        # x2=details.get("x2", "Unknown"), # bounding boxes not supported at the moment
+                        # y2=details.get("y2", "Unknown"), # bounding boxes not supported at the moment
                     )
-                    st.markdown("</div>", unsafe_allow_html=True)
-                valid_entries[image_filename] = details
+
+                    card_html = trading_card(
+                        image_base64=image_base64,
+                        make=details.get("make", "Unknown"),
+                        model=details.get("model", "Unknown"),
+                        year=details.get("year", "Unknown"),
+                        text_color=details.get("color", "Unknown"),
+                        link_url="google.com",
+                    )
+
+                    st.components.v1.html(card_html, height=500)
+
+                # valid_entries[image_filename] = details
             except Exception as e:
                 st.error(f"Error displaying image {image_filename}: {str(e)}")
                 continue
 
         # Update metadata if some entries were invalid
-        if len(valid_entries) != len(metadata):
-            save_metadata(valid_entries)
+        # if len(valid_entries) != len(metadata):
+        #    save_metadata(valid_entries)
 
     else:
         st.info("No cars in your collection yet. Add some cars to get started!")

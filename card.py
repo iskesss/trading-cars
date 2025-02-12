@@ -4,10 +4,16 @@ from PIL import Image
 
 
 # Function to encode the image as base64 and crop it
-def get_cropped_image_base64(image_path, x1, y1, x2, y2):
+def get_cropped_image_base64(
+    image_path, x1: int = None, y1: int = None, x2: int = None, y2: int = None
+):
     # Open the image and crop it
     image = Image.open(image_path)
-    cropped_image = image.crop((x1, y1, x2, y2))
+
+    if x1 and x1 and x2 and y2:
+        cropped_image = image.crop((x1, y1, x2, y2))
+    else:
+        cropped_image = image
 
     # Convert the cropped image to base64
     from io import BytesIO
