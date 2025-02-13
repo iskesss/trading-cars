@@ -6,7 +6,7 @@ from core import identify_vehicle
 from card import get_cropped_image_base64, trading_card
 
 # Page configuration
-st.set_page_config(page_title="TradingCars", layout="wide")
+st.set_page_config(page_title="Trading Cars", layout="wide")
 
 # Directory and file setup
 COLLECTION_DIR = "car_collection"
@@ -39,7 +39,7 @@ def main_page():
     )
     if uploaded_file:
         image_bytes = uploaded_file.getvalue()
-        with st.spinner("Identifying the car..."):
+        with st.spinner("Identifying the car...", show_time=True):
             try:
                 result = identify_vehicle(image_bytes)
 
@@ -82,7 +82,9 @@ def main_page():
         # Keep track of valid entries to potentially clean up metadata
         valid_entries = {}
 
-        for idx, (image_filename, details) in enumerate(metadata.items()):
+        for idx, (image_filename, details) in enumerate(
+            reversed(list(metadata.items()))  # newest cars appear first in gallery
+        ):
             image_path = os.path.join(COLLECTION_DIR, image_filename)
 
             # Check if the image file exists
