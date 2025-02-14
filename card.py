@@ -83,11 +83,10 @@ def trading_card(image_base64, make, model, year, text_color, link_url):
             position: absolute;
             top: 10px;
             right: 10px;
-            width: 50px; /* Fixed container size */
-            height: 50px; /* Fixed container size */
+            width: 50px; /* Container width */
+            height: 50px; /* Container height */
             background: rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
-            padding: 3px;
+            border-radius: 10px; /* Rounded corners */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
@@ -95,9 +94,11 @@ def trading_card(image_base64, make, model, year, text_color, link_url):
             overflow: hidden; /* Ensures the logo doesn't spill out */
         }}
         .logo-image {{
-            max-width: 100%; /* Constrains logo to container width */
-            max-height: 100%; /* Constrains logo to container height */
+            max-width: 90%; /* Slightly smaller to ensure no cropping */
+            max-height: 90%; /* Slightly smaller to ensure no cropping */
             object-fit: contain; /* Ensures the logo fits nicely */
+            width: auto; /* Allows the logo to scale naturally */
+            height: auto; /* Allows the logo to scale naturally */
         }}
     </style>
     <div class="card">
@@ -112,45 +113,3 @@ def trading_card(image_base64, make, model, year, text_color, link_url):
     </div>
     """
     return card_html
-
-
-# Streamlit app
-def main():
-    st.title("Car Trading Card")
-
-    # Inputs for customization
-    image_path = st.text_input("Enter the local image path", "car.jpg")
-    x1 = st.slider("Crop X1", 0, 1000, 100)
-    y1 = st.slider("Crop Y1", 0, 1000, 100)
-    x2 = st.slider("Crop X2", 0, 1000, 400)
-    y2 = st.slider("Crop Y2", 0, 1000, 300)
-    make = st.text_input("Make", "Tesla")
-    model = st.text_input("Model", "Model S")
-    year = st.text_input("Year", "2023")
-    text_color = st.color_picker("Text color", "#000000")
-    link_url = st.text_input("Link URL", "https://www.tesla.com")
-
-    # Ensure x2 > x1 and y2 > y1
-    if x2 <= x1 or y2 <= y1:
-        st.error(
-            "Invalid crop coordinates: x2 must be greater than x1, and y2 must be greater than y1."
-        )
-        return
-
-    # Encode the cropped image as base64
-    try:
-        image_base64 = get_cropped_image_base64(image_path, x1, y1, x2, y2)
-    except FileNotFoundError:
-        st.error("Image file not found. Please check the path.")
-        return
-    except Exception as e:
-        st.error(f"An error occurred: {e}")
-        return
-
-    # Generate and display the card
-    card_html = trading_card(image_base64, make, model, year, text_color, link_url)
-    st.components.v1.html(card_html, height=300)
-
-
-if __name__ == "__main__":
-    main()
