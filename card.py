@@ -1,6 +1,19 @@
-import streamlit as st
 import base64
+import json
+import streamlit as st
 from PIL import Image
+
+
+# Load logo data once at the start (outside the function)
+@st.cache_data  # Cache the data to avoid reloading on every rerun
+def load_logo_data():
+    with open("logo_icons.json", "r") as f:
+        logo_data = json.load(f)
+    return {item["name"]: item["logo"] for item in logo_data}
+
+
+# Create logo dictionary (cached and shared across all cards)
+logo_dict = load_logo_data()
 
 
 # Function to encode the image as base64 and crop it
@@ -26,6 +39,18 @@ def get_cropped_image_base64(
 
 # Define the trading card as an HTML template
 def trading_card(image_base64, make, model, year, text_color, link_url):
+    # Get logo URL for the current vehicle make
+    logo_url = logo_dict.get(make, None)
+
+    # Generate logo HTML if available
+    logo_html = ""
+    if logo_url:
+        logo_html = f"""
+        <div class="logo-container">
+            <img src="{logo_url}" alt="{make} logo" class="logo-image">
+        </div>
+        """
+
     card_html = f"""
     <style>
         .card {{
@@ -37,6 +62,7 @@ def trading_card(image_base64, make, model, year, text_color, link_url):
             text-align: center;
             display: inline-block;
             margin: 10px;
+            position: relative;
         }}
         .card img {{
             width: 100%;
@@ -51,11 +77,33 @@ def trading_card(image_base64, make, model, year, text_color, link_url):
         .card a {{
             text-decoration: none;
             color: inherit;
+            display: block;
+        }}
+        .logo-container {{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 50px; /* Fixed container size */
+            height: 50px; /* Fixed container size */
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            padding: 3px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; /* Ensures the logo doesn't spill out */
+        }}
+        .logo-image {{
+            max-width: 100%; /* Constrains logo to container width */
+            max-height: 100%; /* Constrains logo to container height */
+            object-fit: contain; /* Ensures the logo fits nicely */
         }}
     </style>
     <div class="card">
         <a href="{link_url}" target="_blank">
             <img src="{image_base64}">
+            {logo_html}
             <div class="card-text">
                 <h3>{make}</h3>
                 <p>{model} ({year})</p>
