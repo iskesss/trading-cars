@@ -31,7 +31,7 @@ def save_metadata(metadata):
 
 
 def main_page():
-    st.title("TradingCars")
+    st.title("Trading Cars")
     # st.write("Add a car to your collection!")
     uploaded_file = st.file_uploader(
         "Add a car to your collection....",
