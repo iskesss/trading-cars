@@ -2,6 +2,7 @@ import base64
 import json
 import streamlit as st
 from PIL import Image
+from core import get_car_stats
 
 
 # Load logo data once at the start (outside the function)
@@ -107,7 +108,7 @@ def trading_card(image_base64, make, model, year, text_color, link_url):
             {logo_html}
             <div class="card-text">
                 <h3>{make}</h3>
-                <p>{model} ({year})</p>
+                <p>{model} ({year}) ({ get_car_stats(make=make,model=model,year=year)['drive'] })</p>
             </div>
         </a>
     </div>
