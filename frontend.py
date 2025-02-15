@@ -122,6 +122,11 @@ def main_page():
                         text_color=details.get("color", "Unknown"),
                         drivetrain=details.get("drive", "Unknown"),
                         class_type=details.get("class", "Unknown"),
+                        cylinders=details.get("cylinders"),
+                        displacement=details.get("displacement"),
+                        fuel_type=details.get("fuel_type"),
+                        city_mpg=details.get("city_mpg"),
+                        highway_mpg=details.get("highway_mpg"),
                         link_url="https://google.com",
                     )
 
