@@ -121,6 +121,7 @@ def main_page():
                         year=details.get("year", "Unknown"),
                         text_color=details.get("color", "Unknown"),
                         drivetrain=details.get("drive", "Unknown"),
+                        class_type=details.get("class", "Unknown"),
                         link_url="https://google.com",
                     )
 

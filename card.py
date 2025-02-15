@@ -39,7 +39,9 @@ def get_cropped_image_base64(
 
 
 # Define the trading card as an HTML template
-def trading_card(image_base64, make, model, year, text_color, link_url, drivetrain):
+def trading_card(
+    image_base64, make, model, year, text_color, link_url, drivetrain, class_type
+):
     # Get logo URL for the current vehicle make
     logo_url = logo_dict.get(make, None)
 
@@ -108,7 +110,7 @@ def trading_card(image_base64, make, model, year, text_color, link_url, drivetra
             {logo_html}
             <div class="card-text">
                 <h3>{make}</h3>
-                <p>{model} ({year}) ({drivetrain})</p>
+                <p>{model} ({year}) ({drivetrain}) ({class_type})</p>
             </div>
         </a>
     </div>
