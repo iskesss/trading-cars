@@ -34,6 +34,9 @@ def identify_vehicle(image_bytes):
         color_code,
     ) = map(str.strip, response.text.split(","))
 
+    make = make.title()  # ensures consistent capitalization
+    model = model.title()  # ensures consistent capitalization
+
     return (
         year,
         make,
