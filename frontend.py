@@ -1,13 +1,13 @@
 import streamlit as st
-
-# Page configuration
-st.set_page_config(page_title="CarCollector", layout="wide")
-
 import os
 import uuid
 import json
 from core import identify_vehicle, get_car_stats
-from icecream import ic
+
+# Get port from environment variable
+PORT = int(os.getenv("PORT", "8080"))
+# Page configuration
+st.set_page_config(page_title="CarCollector", layout="wide", port=PORT)
 
 # Directory and file setup
 COLLECTION_DIR = "car_collection"
@@ -29,6 +29,14 @@ def load_metadata():
 def save_metadata(metadata):
     with open(METADATA_FILE, "w") as f:
         json.dump(metadata, f, indent=4)
+
+
+# Load logo data once at the start (outside the function)
+@st.cache_data  # Cache the data to avoid reloading on every rerun
+def load_logo_data():
+    with open("logo_icons.json", "r") as f:
+        logo_data = json.load(f)
+    return {item["name"]: item["logo"] for item in logo_data}
 
 
 def main_page():
