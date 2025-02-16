@@ -56,7 +56,6 @@ def find_suitable_card(vehicle_image_path, vehicle_details):
     curr_model = vehicle_details.get("model")
     curr_year = vehicle_details.get("year")
     curr_vehicle_color = vehicle_details.get("color")
-    curr_link_url = ("https://google.com",)  # put something cool here
 
     curr_drivetrain = vehicle_details.get("drive", "Unknown")
     curr_class_type = vehicle_details.get("class", "Unknown")
@@ -82,7 +81,6 @@ def find_suitable_card(vehicle_image_path, vehicle_details):
                 model=curr_model,
                 year=curr_year,
                 vehicle_color=curr_vehicle_color,
-                link_url=curr_link_url,
             )
         except Exception as e:
             print(f"Error building basic card: {str(e)}")
@@ -95,7 +93,6 @@ def find_suitable_card(vehicle_image_path, vehicle_details):
                 year=curr_year,
                 vehicle_color=curr_vehicle_color,
                 drivetrain=curr_drivetrain,
-                link_url=curr_link_url,
                 displacement=curr_displacement,
                 city_mpg=curr_city_mpg,
                 highway_mpg=curr_highway_mpg,
@@ -114,7 +111,6 @@ def basic_trading_card(
     model: str,
     year: str,
     vehicle_color: str,
-    link_url: str,
 ):
     # Get the logo URL for the given make (assuming logo_dict is defined globally)
     logo_url = logo_dict.get(make, None)
@@ -190,7 +186,7 @@ def basic_trading_card(
         }}
     </style>
     <div class="card">
-        <a href="{link_url}" target="_blank">
+        <a href="https://en.wikipedia.org/wiki/{make}_{model}" target="_blank">
             <img src="{image_base64}" alt="Car image" class="main-image">
             {logo_html}
             <div class="card-text">
@@ -209,7 +205,6 @@ def trading_card_with_specs(
     model: str,
     year: str,
     vehicle_color: str,
-    link_url: str,
     drivetrain: str,
     class_type: str,
     cylinders: str,
@@ -344,7 +339,7 @@ def trading_card_with_specs(
         }}
     </style>
     <div class="card">
-        <a href="{link_url}" target="_blank">
+        <a href="https://en.wikipedia.org/wiki/{make}_{model}" target="_blank">
             <img src="{image_base64}" alt="Car image" class="main-image">
             {logo_html}
             <div class="card-text">

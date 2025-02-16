@@ -114,7 +114,6 @@ def main_page():
             if not os.path.exists(image_path):
                 continue
 
-            # Try to display the image and its details
             try:
                 col = cols[idx % 3]
                 with col:
