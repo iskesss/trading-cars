@@ -1,13 +1,14 @@
-import os
-import uuid
-import json
 import streamlit as st
-from core import identify_vehicle, get_car_stats
-from card import find_suitable_card
-from icecream import ic
 
 # Page configuration
 st.set_page_config(page_title="CarCollector", layout="wide")
+
+import os
+import uuid
+import json
+from core import identify_vehicle, get_car_stats
+from card import find_suitable_card
+from icecream import ic
 
 # Directory and file setup
 COLLECTION_DIR = "car_collection"
