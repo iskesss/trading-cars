@@ -27,8 +27,6 @@ def identify_vehicle(image_bytes):
         ]
     )
 
-    print(response.text)
-
     # parse LLM response
     (
         year,

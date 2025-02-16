@@ -3,7 +3,7 @@ import uuid
 import json
 import streamlit as st
 from core import identify_vehicle, get_car_stats
-from card import get_cropped_image_base64, trading_card
+from card import find_suitable_card
 from icecream import ic
 
 # Page configuration
@@ -80,7 +80,6 @@ def main_page():
                     car_info.update(api_stats)  # merge car_info and car_stats
                 else:
                     car_info = result
-                ic("made it here 4")
                 # Save image
                 image_filename = f"{uuid.uuid4().hex}.png"
                 image_path = os.path.join(COLLECTION_DIR, image_filename)
@@ -119,35 +118,13 @@ def main_page():
             try:
                 col = cols[idx % 3]
                 with col:
-                    image_base64 = get_cropped_image_base64(
-                        image_path=image_path,
-                        # x1=details.get("x1", "Unknown"), # bounding boxes not supported at the moment
-                        # y1=details.get("y1", "Unknown"), # bounding boxes not supported at the moment
-                        # x2=details.get("x2", "Unknown"), # bounding boxes not supported at the moment
-                        # y2=details.get("y2", "Unknown"), # bounding boxes not supported at the moment
+                    card_html = find_suitable_card(
+                        vehicle_image_path=image_path, vehicle_details=details
                     )
-
-                    card_html = trading_card(
-                        image_base64=image_base64,
-                        make=details.get("make", "Unknown"),
-                        model=details.get("model", "Unknown"),
-                        year=details.get("year", "Unknown"),
-                        vehicle_color=details.get("color", "Unknown"),
-                        drivetrain=details.get("drive", "Unknown"),
-                        class_type=details.get("class", "Unknown"),
-                        cylinders=details.get("cylinders"),
-                        displacement=details.get("displacement"),
-                        fuel_type=details.get("fuel_type"),
-                        city_mpg=details.get("city_mpg"),
-                        highway_mpg=details.get("highway_mpg"),
-                        link_url="https://google.com",
-                    )
-
                     st.components.v1.html(card_html, height=350)
 
-                # valid_entries[image_filename] = details
             except Exception as e:
-                st.error(f"Error displaying image {image_filename}: {str(e)}")
+                st.error(f"Error displaying card {image_filename}: {str(e)}")
                 continue
 
     else:
