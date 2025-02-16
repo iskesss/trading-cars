@@ -2,6 +2,7 @@ import requests
 import os
 import google.generativeai as genai
 from dotenv import load_dotenv
+from icecream import ic
 
 load_dotenv()
 
@@ -49,19 +50,21 @@ def identify_vehicle(image_bytes):
 
 def get_car_stats(make: str, model: str, year: str) -> dict:
     url = f"https://api.api-ninjas.com/v1/cars?year={year}&make={make}&model={model}"
-    headers = {
-        "X-Api-Key": os.environ.get("API_NINJAS_KEY", "YOUR_API_KEY")
-    }  # Replace "YOUR_API_KEY" as needed
+    headers = {"X-Api-Key": os.environ.get("API_NINJAS_KEY", "YOUR_API_KEY")}
 
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
-        return response.json()[0]
+        json = response.json()
+        if len(json):
+            return json[0]
+        else:
+            print("Request succeeded but returned empty.")
     else:
         print(
             f"Request failed with status code {response.status_code}: {response.text}"
         )
-        return {}
+    return {}
 
 
 def identify_vehicle_with_bbox(image_bytes):
@@ -129,4 +132,4 @@ Firstly (YEAR, MAKE, MODEL, PRIMARY_COLOR_HEX_CODE) and then secondly, upperleft
         return None
 
 
-# print(get_car_stats(make="toyota", model="prius", year="2006"))
+# ic(get_car_stats(make="Aston Martin", model="Valhalla", year="2023"))

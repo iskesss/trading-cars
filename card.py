@@ -45,18 +45,18 @@ def get_svg_base64(file_path):
 # Define the trading card as an HTML template with Material Design style,
 def trading_card(
     image_base64,
-    make,
-    model,
-    year,
-    text_color,
-    link_url,
-    drivetrain,
-    class_type,
-    cylinders,
-    displacement,
-    city_mpg,
-    highway_mpg,
-    fuel_type,
+    make: str,
+    model: str,
+    year: str,
+    vehicle_color: str,
+    link_url: str,
+    drivetrain: str,
+    class_type: str,
+    cylinders: str,
+    displacement: str,
+    city_mpg: str,
+    highway_mpg: str,
+    fuel_type: str,
 ):
     # Get logo URL for the current vehicle make
     logo_url = logo_dict.get(make, None)
@@ -70,7 +70,7 @@ def trading_card(
         </div>
         """
 
-    # Get the drivetrain SVG icon as a data URI (using the light version)
+    # Get the drivetrain SVG icon as a data URI (using the dark version)
     drivetrain_icon = get_svg_base64(f"./icons/{drivetrain}-dark.svg")
 
     # Build the specs section based on the fuel type
@@ -84,7 +84,7 @@ def trading_card(
                     <span>{drivetrain.upper()}</span>
                 </div>
             </div>
-            <p>{fuel_type} {class_type}</p>
+            <p>{fuel_type} - {class_type}</p>
         """
     else:
         specs_section = f"""
@@ -100,7 +100,7 @@ def trading_card(
                     <span>{cylinders}-cyl &bull; {displacement}L</span>
                 </div>
             </div>
-            <p>{fuel_type} {class_type} - {(city_mpg + highway_mpg) / 2} MPG</p>
+            <p>{fuel_type} - {class_type} - {(city_mpg + highway_mpg) / 2} MPG</p>
         """
 
     card_html = f"""
@@ -112,14 +112,14 @@ def trading_card(
             border-radius: 4px;
             overflow: hidden;
             background-color: #fff;
-            box-shadow: 0 1px 3px {text_color}, 0 1px 2px {text_color};
+            box-shadow: 0 1px 3px {vehicle_color}, 0 1px 2px {vehicle_color};
             transition: box-shadow 0.3s ease-in-out;
             font-family: 'Roboto', sans-serif;
             position: relative;
             margin: 10px;
         }}
         .card:hover {{
-            box-shadow: 0 8px 16px {text_color}, 0 6px 6px {text_color};
+            box-shadow: 0 8px 16px {vehicle_color}, 0 6px 6px {vehicle_color};
         }}
         .card img.main-image {{
             width: 100%;
@@ -128,7 +128,7 @@ def trading_card(
         }}
         .card-text {{
             padding: 16px;
-            color: {text_color};
+            color: {vehicle_color};
         }}
         .card-text h3 {{
             margin: 0;
@@ -153,7 +153,7 @@ def trading_card(
             height: 40px;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 4px;
-            box-shadow: 0 2px 4px {text_color};
+            box-shadow: 0 2px 4px {vehicle_color};
             display: flex;
             align-items: center;
             justify-content: center;

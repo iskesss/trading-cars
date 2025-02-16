@@ -4,6 +4,7 @@ import json
 import streamlit as st
 from core import identify_vehicle, get_car_stats
 from card import get_cropped_image_base64, trading_card
+from icecream import ic
 
 # Page configuration
 st.set_page_config(page_title="Trading Cars", layout="wide")
@@ -31,8 +32,21 @@ def save_metadata(metadata):
 
 
 def main_page():
+    # Inject CSS to import the Roboto font and force it on all app elements
+    st.markdown(
+        """
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+        /* Target the main container and all of its children */
+        [data-testid="stAppViewContainer"] * {
+            font-family: 'Roboto', sans-serif !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
     st.title("Trading Cars")
-    # st.write("Add a car to your collection!")
     uploaded_file = st.file_uploader(
         "Add a car to your collection....",
         type=["jpg", "jpeg"],
@@ -63,11 +77,10 @@ def main_page():
                     # remove year, make, and model from api_stats before merging with car_info
                     for key in ["year", "make", "model"]:
                         api_stats.pop(key, None)
-
                     car_info.update(api_stats)  # merge car_info and car_stats
                 else:
                     car_info = result
-
+                ic("made it here 4")
                 # Save image
                 image_filename = f"{uuid.uuid4().hex}.png"
                 image_path = os.path.join(COLLECTION_DIR, image_filename)
@@ -119,7 +132,7 @@ def main_page():
                         make=details.get("make", "Unknown"),
                         model=details.get("model", "Unknown"),
                         year=details.get("year", "Unknown"),
-                        text_color=details.get("color", "Unknown"),
+                        vehicle_color=details.get("color", "Unknown"),
                         drivetrain=details.get("drive", "Unknown"),
                         class_type=details.get("class", "Unknown"),
                         cylinders=details.get("cylinders"),
