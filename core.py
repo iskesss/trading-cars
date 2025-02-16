@@ -16,7 +16,7 @@ def identify_vehicle(image_bytes):
     # Initialize model with system instruction
     model = genai.GenerativeModel(
         "gemini-2.0-flash",
-        system_instruction="You are a car recognition expert. Respond ONLY with 'YEAR, MAKE, MODEL, PRIMARY_COLOR_HEX_CODE' of the main car in the photo.",
+        system_instruction="You are a car recognition expert. Respond ONLY with 'YEAR, MAKE, MODEL, PRIMARY_COLOR_HEX_CODE' of the main car in the photo. Only capitalize where correct.",
     )
 
     # Generate content with separate text and image parts
@@ -35,8 +35,8 @@ def identify_vehicle(image_bytes):
         color_code,
     ) = map(str.strip, response.text.split(","))
 
-    make = make.title()  # ensures consistent capitalization
-    model = model.title()  # ensures consistent capitalization
+    # make = make.title()  # ensures consistent capitalization
+    # model = model.title()  # ensures consistent capitalization
 
     return (
         year,
@@ -74,8 +74,8 @@ def identify_vehicle_with_bbox(image_bytes):
     model = genai.GenerativeModel(
         "gemini-2.0-flash",
         system_instruction="""
-You are a car recognition expert. Your response must consist solely of two distinct 4-tuples describing the main car in the image.
-Firstly (YEAR, MAKE, MODEL, PRIMARY_COLOR_HEX_CODE) and then secondly, upperleft/lowerright bounding box corner coordinates surrounding the entire car, in the tuple form (x1, y1, x2, y2).""",
+You are a car recognition expert. Your response must consist solely of two distinct 4-tuples describing the main car in the image. 
+Firstly (YEAR, MAKE, MODEL, PRIMARY_COLOR_HEX_CODE) and then secondly, upperleft/lowerright bounding box corner coordinates surrounding the entire car, in the tuple form (x1, y1, x2, y2). Only capitalize where correct.""",
     )
 
     # Generate content with separate text and image parts

@@ -7,7 +7,7 @@ from card import find_suitable_card
 from icecream import ic
 
 # Page configuration
-st.set_page_config(page_title="Trading Cars", layout="wide")
+st.set_page_config(page_title="CarCollector", layout="wide")
 
 # Directory and file setup
 COLLECTION_DIR = "car_collection"
@@ -46,7 +46,7 @@ def main_page():
         unsafe_allow_html=True,
     )
 
-    st.title("Trading Cars")
+    st.title("CarCollector")
     uploaded_file = st.file_uploader(
         "Add a car to your collection....",
         type=["jpg", "jpeg"],
