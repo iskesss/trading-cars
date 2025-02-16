@@ -7,7 +7,6 @@ import os
 import uuid
 import json
 from core import identify_vehicle, get_car_stats
-from card import find_suitable_card
 from icecream import ic
 
 # Directory and file setup
@@ -33,6 +32,8 @@ def save_metadata(metadata):
 
 
 def main_page():
+    from card import find_suitable_card
+
     # Inject CSS to import the Roboto font and force it on all app elements
     st.markdown(
         """
