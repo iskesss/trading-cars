@@ -7,7 +7,7 @@ from core import identify_vehicle, get_car_stats
 # Get port from environment variable
 PORT = int(os.getenv("PORT", "8080"))
 # Page configuration
-st.set_page_config(page_title="CarCollector", layout="wide", port=PORT)
+st.set_page_config(page_title="CarCollector", layout="wide")
 
 # Directory and file setup
 COLLECTION_DIR = "car_collection"

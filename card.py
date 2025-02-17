@@ -44,6 +44,7 @@ def get_svg_base64(file_path):
 
 
 def find_suitable_card(vehicle_image_path, vehicle_details):
+
     image_base64 = get_cropped_image_base64(
         image_path=vehicle_image_path,
         # x1=details.get("x1", "Unknown"), # bounding boxes not supported at the moment
@@ -57,6 +58,8 @@ def find_suitable_card(vehicle_image_path, vehicle_details):
     curr_year = vehicle_details.get("year")
     curr_vehicle_color = vehicle_details.get("color")
 
+    print(f"Finding suitable card for {curr_make} {curr_model}")
+
     curr_drivetrain = vehicle_details.get("drive", "Unknown")
     curr_class_type = vehicle_details.get("class", "Unknown")
     curr_cylinders = vehicle_details.get("cylinders", "Unknown")
@@ -64,6 +67,8 @@ def find_suitable_card(vehicle_image_path, vehicle_details):
     curr_fuel_type = vehicle_details.get("fuel_type", "Unknown")
     curr_city_mpg = vehicle_details.get("city_mpg", "Unknown")
     curr_highway_mpg = vehicle_details.get("highway_mpg", "Unknown")
+
+    card_html = None
 
     if (
         curr_drivetrain == "Unknown"
@@ -74,6 +79,7 @@ def find_suitable_card(vehicle_image_path, vehicle_details):
         or curr_cylinders == "Unknown"
         or curr_class_type == "Unknown"
     ):
+
         try:
             card_html = basic_trading_card(
                 image_base64=image_base64,
@@ -226,7 +232,9 @@ def trading_card_with_specs(
         """
 
     # Get the drivetrain SVG icon as a data URI (using the dark version)
-    drivetrain_icon = get_svg_base64(f"./icons/{drivetrain}-dark.svg")
+    drivetrain_icon = get_svg_base64(
+        f"./drivetrain_icons/{drivetrain.upper()}-dark.svg"
+    )
 
     # Build the specs section based on the fuel type
     if fuel_type.lower() == "electricity":
