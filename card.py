@@ -133,17 +133,19 @@ def basic_trading_card(
     <style>
         .card {{
             width: 300px;
+            border: 1.5px solid black;
             border-radius: 4px;
             overflow: hidden;
-            background-color: #fff;
-            box-shadow: 0 1px 3px {vehicle_color};
-            transition: box-shadow 0.3s ease-in-out;
+            background-color: white;
+            box-shadow: 0 2px 3px {vehicle_color};
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             font-family: 'Roboto', sans-serif;
             position: relative;
             margin: 10px;
         }}
         .card:hover {{
-            box-shadow: 0 8px 16px {vehicle_color};
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 8px 15px {vehicle_color};
         }}
         .card img.main-image {{
             width: 100%;
@@ -158,7 +160,7 @@ def basic_trading_card(
             margin: 0;
             font-size: 1.25rem;
             font-weight: 500;
-            color: {vehicle_color}
+            color: black
         }}
         .card-text p {{
             margin: 8px 0 0;
@@ -271,17 +273,20 @@ def trading_card_with_specs(
     <style>
         .card {{
             width: 300px;
+            border: 1.5px solid black;
             border-radius: 4px;
             overflow: hidden;
-            background-color: #fff;
-            box-shadow: 0 1px 3px {vehicle_color}, 0 1px 2px {vehicle_color};
-            transition: box-shadow 0.3s ease-in-out;
+            background-color: white;
+            box-shadow: 0 2px 3px {vehicle_color};
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             font-family: 'Roboto', sans-serif;
             position: relative;
             margin: 10px;
         }}
+        
         .card:hover {{
-            box-shadow: 0 8px 16px {vehicle_color}, 0 6px 6px {vehicle_color};
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 8px 13px {vehicle_color};
         }}
         .card img.main-image {{
             width: 100%;
@@ -290,7 +295,7 @@ def trading_card_with_specs(
         }}
         .card-text {{
             padding: 16px;
-            color: {vehicle_color};
+            color: black;
         }}
         .card-text h3 {{
             margin: 0;

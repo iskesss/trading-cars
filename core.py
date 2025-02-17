@@ -16,7 +16,7 @@ def identify_vehicle(image_bytes):
     # Initialize model with system instruction
     model = genai.GenerativeModel(
         "gemini-2.0-flash",
-        system_instruction="You are a car recognition expert. Respond ONLY with 'YEAR, MAKE, MODEL, PRIMARY_COLOR_HEX_CODE' of the main car in the photo. Only capitalize where correct.",
+        system_instruction="You are a car recognition expert. Respond ONLY with 'YEAR, MAKE, MODEL, PRIMARY_COLOR_HEX_CODE' of the main car in the photo. Only capitalize where correct. Do not specify trim level.",
     )
 
     # Generate content with separate text and image parts
