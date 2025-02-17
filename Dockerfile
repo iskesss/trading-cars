@@ -2,6 +2,8 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
+EXPOSE 8080
+
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
@@ -14,12 +16,11 @@ COPY . .
 RUN pip install --upgrade pip
 RUN pip3 install -r requirements.txt
 
-ENV PORT=8080
-EXPOSE ${PORT}
+# HEALTHCHECK CMD curl --fail http://localhost:${PORT}/_stcore/health
 
-HEALTHCHECK CMD curl --fail http://localhost:${PORT}/_stcore/health
-
-CMD streamlit run frontend.py \
-    --server.port=${PORT} \
+CMD sh -c "streamlit run frontend.py \
+    --server.port=${PORT:-8080} \
     --server.address=0.0.0.0 \
-    --server.baseUrlPath=""
+    --server.headless=true \
+    --server.baseUrlPath=''"
+
