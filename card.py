@@ -58,8 +58,6 @@ def find_suitable_card(vehicle_image_path, vehicle_details):
     curr_year = vehicle_details.get("year")
     curr_vehicle_color = vehicle_details.get("color")
 
-    print(f"Finding suitable card for {curr_make} {curr_model}")
-
     curr_drivetrain = vehicle_details.get("drive", "Unknown")
     curr_class_type = vehicle_details.get("class", "Unknown")
     curr_cylinders = vehicle_details.get("cylinders", "Unknown")
@@ -160,6 +158,7 @@ def basic_trading_card(
             margin: 0;
             font-size: 1.25rem;
             font-weight: 500;
+            color: {vehicle_color}
         }}
         .card-text p {{
             margin: 8px 0 0;

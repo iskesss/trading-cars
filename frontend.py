@@ -51,7 +51,6 @@ def main_page():
         [data-testid="stAppViewContainer"] * {
             font-family: 'Roboto', sans-serif !important;
         }
-        </style>
         """,
         unsafe_allow_html=True,
     )
