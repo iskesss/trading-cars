@@ -57,7 +57,9 @@ def get_car_stats(make: str, model: str, year: str) -> dict:
         if len(json):
             return json[0]
         else:
-            print("Request succeeded but returned empty.")
+            print(
+                "Stat API request succeeded, but returned empty. (make, model, and year not recognized)"
+            )
     else:
         print(
             f"Request failed with status code {response.status_code}: {response.text}"

@@ -3,11 +3,12 @@ import os
 import uuid
 import json
 from core import identify_vehicle, get_car_stats
+from streamlit_extras.let_it_rain import rain
 
 # Get port from environment variable
 PORT = int(os.getenv("PORT", "8080"))
 # Page configuration
-st.set_page_config(page_title="CarCollector", layout="wide")
+st.set_page_config(page_title="TradingCars", page_icon="🚘", layout="wide")
 
 # Directory and file setup
 COLLECTION_DIR = "car_collection"
@@ -55,10 +56,12 @@ def main_page():
         unsafe_allow_html=True,
     )
 
-    st.title("CarCollector")
+    st.title(body="Trading Cars :orange[(Early Web Demo)]")
+
     uploaded_file = st.file_uploader(
-        "Add a car to your collection....",
+        label="Add a car to your collection 👇",
         type=["jpg", "jpeg"],
+        help="Upload a JPG car photo to be recognized by AI and placed in your collection. Non-car photos will cause errors.",
     )
     if uploaded_file:
         image_bytes = uploaded_file.getvalue()
@@ -103,6 +106,7 @@ def main_page():
                 st.success(
                     f"{car_info.get('year', 'YearUnknown')} {car_info.get('make', 'MakeUnknown')} {car_info.get('model', 'ModelUnknown')} successfully added to your collection!"
                 )
+                st.balloons()
 
             except Exception as e:
                 st.error(f"Error during identification: {str(e)}")
@@ -110,7 +114,7 @@ def main_page():
     metadata = load_metadata()
 
     if metadata:
-
+        st.markdown("### My Collection")
         cols = st.columns(3)
 
         for idx, (image_filename, details) in enumerate(
@@ -137,6 +141,32 @@ def main_page():
 
     else:
         st.info("No cars in your collection yet. Add some cars to get started!")
+
+    with st.expander(label="What on earth is 'Trading Cars'?", icon="🔎"):
+        st.markdown(
+            """
+            #### Think Pokémon GO for car spotters. Snap photos of real cars to collect, trade, and track them.
+            **Are you a car enthusiast? Are you trying to become one? Let's gamify that.**
+
+            ---
+            ***My Vision (future roadmap):***
+
+            📲 Free mobile app
+
+            🎴 Car cards with rarity tiers (⚪ 🟢 🔵 🟣 🟠)
+
+            🎁 Trade cards with other users
+
+            📍 Sightings are geotagged, fueling a live **community-driven map** 🗺️ — spot rare cars near you, thanks to fellow enthusiasts!
+
+            🚫 No monetization, no NFTs—just a fun way to share experiences
+            
+            ---
+            **Author:** [Jordan Bouret](https://www.linkedin.com/in/jordan-bouret/) |
+            **Version:** 1.0.0 |
+            **GitHub Repo:** [Here](https://github.com/iskesss/trading-cars)
+        """
+        )
 
 
 main_page()
